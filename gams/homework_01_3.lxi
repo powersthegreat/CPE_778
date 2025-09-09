@@ -1,0 +1,21 @@
+B 3 C o m p i l a t i o n
+B 65 Equation Listing    SOLVE test Using LP From line 23
+D 68 cost
+D 73 eq1
+D 78 eq2
+D 83 eq3
+B 89 Column Listing      SOLVE test Using LP From line 23
+E 92 x
+E 116 z
+B 124 Range Statistics    SOLVE test Using LP From line 23
+B 135 Model Statistics    SOLVE test Using LP From line 23
+B 148 Solution Report     SOLVE test Using LP From line 23
+F 181 cost
+F 182 eq1
+F 183 eq2
+F 184 eq3
+G 186 x
+G 196 z
+B 204 E x e c u t i o n
+I 204 x
+I 210 x

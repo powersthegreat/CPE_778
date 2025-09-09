@@ -1,0 +1,497 @@
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  Variables
+   2      x1, x2, z;
+   3   
+   4  Equations
+   5      obj;
+   6   
+   7  * Objective function (quadratic)
+   8  obj.. z =e= 5*sqr(x1) + sqr(x2) + 2*x1*x2 - 12*x1 - 4*x2 + 8;
+   9   
+  10  Model quad /all/;
+  11   
+  12  * Starting point 1
+  13  x1.l = 0;
+  14  x2.l = -2;
+  15   
+  16  Solve quad using nlp minimizing z;
+  17   
+  18  display x1.l, x2.l, z.l;
+  19   
+  20  Parameter
+  21      results(*);
+  22   
+  23  results('x1')        = x1.l;
+  24  results('x2')        = x2.l;
+  25  results('z')         = z.l;
+  26  results('ModelStat') = quad.modelstat;
+  27  results('SolveStat') = quad.solvestat;
+  28  results('CPUtime')   = timeelapsed;
+  29   
+  30  display results;
+  31   
+  32   
+  33  * Starting point 2
+  34  x1.l = 0;
+  35  x2.l = -4;
+  36   
+  37  Solve quad using nlp minimizing z;
+  38   
+  39  display x1.l, x2.l, z.l;
+  40   
+  41  Parameter
+  42      results(*);
+  43   
+  44  results('x1')        = x1.l;
+  45  results('x2')        = x2.l;
+  46  results('z')         = z.l;
+  47  results('ModelStat') = quad.modelstat;
+  48  results('SolveStat') = quad.solvestat;
+  49  results('CPUtime')   = timeelapsed;
+  50   
+  51  display results;
+  52   
+  53  * Starting point 3
+  54  x1.l = 2;
+  55  x2.l = -2;
+  56   
+  57  Solve quad using nlp minimizing z;
+  58   
+  59  display x1.l, x2.l, z.l;
+  60   
+  61  Parameter
+  62      results(*);
+  63   
+  64  results('x1')        = x1.l;
+  65  results('x2')        = x2.l;
+  66  results('z')         = z.l;
+  67  results('ModelStat') = quad.modelstat;
+  68  results('SolveStat') = quad.solvestat;
+  69  results('CPUtime')   = timeelapsed;
+  70   
+  71  display results;
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 MB  50.4.0 c55df396 WEX-WEI
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Equation Listing    SOLVE quad Using NLP From line 16
+
+
+---- obj  =E=  
+
+obj..  (16)*x1 + (8)*x2 + z =E= 8 ; (LHS = -12, INFES = 20 ****)
+     
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE quad Using NLP From line 16
+
+
+---- x1  
+
+x1
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+      (16)      obj
+
+
+---- x2  
+
+x2
+                (.LO, .L, .UP, .M = -INF, -2, +INF, 0)
+       (8)      obj
+
+
+---- z  
+
+z
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       obj
+
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 4
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Range Statistics    SOLVE quad Using NLP From line 16
+
+
+RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
+
+RHS       [min, max] : [ 8.000E+00, 8.000E+00]
+Bound     [min, max] : [        NA,        NA]
+Matrix    [min, max] : [ 1.000E+00, 1.600E+01]
+
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 5
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Model Statistics    SOLVE quad Using NLP From line 16
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           1     SINGLE EQUATIONS            1
+BLOCKS OF VARIABLES           3     SINGLE VARIABLES            3
+NON ZERO ELEMENTS             3     NON LINEAR N-Z              2
+CODE LENGTH                  18     CONSTANT POOL              18
+
+
+GENERATION TIME      =        0.000 SECONDS      4 MB  50.4.0 c55df396 WEX-WEI
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 6
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE quad Using NLP From line 16
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   quad                OBJECTIVE  z
+     TYPE    NLP                 DIRECTION  MINIMIZE
+     SOLVER  CONOPT              FROM LINE  16
+
+**** SOLVER STATUS     1 Normal Completion
+**** MODEL STATUS      2 Locally Optimal
+**** OBJECTIVE VALUE                0.0000
+
+ RESOURCE USAGE, LIMIT          0.000 10000000000.000
+ ITERATION COUNT, LIMIT         2    2147483647
+ EVALUATION ERRORS              0             0
+--- *** This solver runs with a demo license. No commercial use.
+ 
+ 
+    C O N O P T   version 4.37
+    Copyright (C) GAMS Software GmbH
+                  GAMS Development Corporation
+ 
+    Will use up to 4 threads.
+ 
+ 
+    The user model has 1 constraints and 3 variables
+    with 3 Jacobian elements, 2 of which are nonlinear.
+    The Hessian of the Lagrangian has 2 elements on the diagonal,
+    1 elements below the diagonal, and 2 nonlinear variables.
+ 
+    The post-triangular part of the model has 1 constraints and variables.
+ 
+    Preprocessed model has no constraints and 2 variables.
+ 
+ ** Optimal solution. Reduced gradient less than tolerance.
+ 
+ 
+ CONOPT time Total                            0.001 seconds
+   of which: Function evaluations             0.000 =  0.0%
+             1st Derivative evaluations       0.000 =  0.0%
+             2nd Derivative evaluations       0.000 =  0.0%
+             Directional 2nd Deriv(Hess)      0.000 =  0.0%
+             Interval derivative evals        0.000 =  0.0%
+ 
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU obj                8.0000         8.0000         8.0000         1.0000      
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR x1                -INF            1.0000        +INF            EPS         
+---- VAR x2                -INF            1.0000        +INF            EPS         
+---- VAR z                 -INF             .            +INF             .          
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+                             0     ERRORS
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 7
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+E x e c u t i o n
+
+
+----     18 VARIABLE x1.L                  =        1.000  
+            VARIABLE x2.L                  =        1.000  
+            VARIABLE z.L                   =        0.000  
+
+----     30 PARAMETER results  
+
+x1        1.000,    x2        1.000,    ModelStat 2.000,    SolveStat 1.000,    CPUtime   0.054
+
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 8
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Equation Listing    SOLVE quad Using NLP From line 37
+
+
+---- obj  =E=  
+
+obj..  (20)*x1 + (12)*x2 + z =E= 8 ; (LHS = -32, INFES = 40 ****)
+     
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 9
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE quad Using NLP From line 37
+
+
+---- x1  
+
+x1
+                (.LO, .L, .UP, .M = -INF, 0, +INF, EPS)
+      (20)      obj
+
+
+---- x2  
+
+x2
+                (.LO, .L, .UP, .M = -INF, -4, +INF, EPS)
+      (12)      obj
+
+
+---- z  
+
+z
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       obj
+
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 10
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Range Statistics    SOLVE quad Using NLP From line 37
+
+
+RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
+
+RHS       [min, max] : [ 8.000E+00, 8.000E+00]
+Bound     [min, max] : [        NA,        NA]
+Matrix    [min, max] : [ 1.000E+00, 2.000E+01]
+
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 11
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Model Statistics    SOLVE quad Using NLP From line 37
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           1     SINGLE EQUATIONS            1
+BLOCKS OF VARIABLES           3     SINGLE VARIABLES            3
+NON ZERO ELEMENTS             3     NON LINEAR N-Z              2
+CODE LENGTH                  18     CONSTANT POOL              18
+
+
+GENERATION TIME      =        0.000 SECONDS      4 MB  50.4.0 c55df396 WEX-WEI
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 12
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE quad Using NLP From line 37
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   quad                OBJECTIVE  z
+     TYPE    NLP                 DIRECTION  MINIMIZE
+     SOLVER  CONOPT              FROM LINE  37
+
+**** SOLVER STATUS     1 Normal Completion
+**** MODEL STATUS      2 Locally Optimal
+**** OBJECTIVE VALUE                0.0000
+
+ RESOURCE USAGE, LIMIT          0.016 10000000000.000
+ ITERATION COUNT, LIMIT         2    2147483647
+ EVALUATION ERRORS              0             0
+--- *** This solver runs with a demo license. No commercial use.
+ 
+ 
+    C O N O P T   version 4.37
+    Copyright (C) GAMS Software GmbH
+                  GAMS Development Corporation
+ 
+    Will use up to 4 threads.
+ 
+ 
+    The user model has 1 constraints and 3 variables
+    with 3 Jacobian elements, 2 of which are nonlinear.
+    The Hessian of the Lagrangian has 2 elements on the diagonal,
+    1 elements below the diagonal, and 2 nonlinear variables.
+ 
+    The post-triangular part of the model has 1 constraints and variables.
+ 
+    Preprocessed model has no constraints and 2 variables.
+ 
+ ** Optimal solution. Reduced gradient less than tolerance.
+ 
+ 
+ CONOPT time Total                            0.001 seconds
+   of which: Function evaluations             0.000 =  0.0%
+             1st Derivative evaluations       0.000 =  0.0%
+             2nd Derivative evaluations       0.000 =  0.0%
+             Directional 2nd Deriv(Hess)      0.000 =  0.0%
+             Interval derivative evals        0.000 =  0.0%
+ 
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU obj                8.0000         8.0000         8.0000         1.0000      
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR x1                -INF            1.0000        +INF            EPS         
+---- VAR x2                -INF            1.0000        +INF            EPS         
+---- VAR z                 -INF      1.776357E-15        +INF             .          
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+                             0     ERRORS
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 13
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+E x e c u t i o n
+
+
+----     39 VARIABLE x1.L                  =        1.000  
+            VARIABLE x2.L                  =        1.000  
+            VARIABLE z.L                   =  1.77636E-15  
+
+----     51 PARAMETER results  
+
+x1              1.000,    x2              1.000,    z         1.77636E-15,    ModelStat       2.000,    SolveStat       1.000,    CPUtime         0.090
+
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 14
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Equation Listing    SOLVE quad Using NLP From line 57
+
+
+---- obj  =E=  
+
+obj..  - (4)*x1 + (4)*x2 + z =E= 8 ; (LHS = 0, INFES = 8 ****)
+     
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 15
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE quad Using NLP From line 57
+
+
+---- x1  
+
+x1
+                (.LO, .L, .UP, .M = -INF, 2, +INF, EPS)
+      (-4)      obj
+
+
+---- x2  
+
+x2
+                (.LO, .L, .UP, .M = -INF, -2, +INF, EPS)
+       (4)      obj
+
+
+---- z  
+
+z
+                (.LO, .L, .UP, .M = -INF, 1.77635683940025E-15, +INF, 0)
+        1       obj
+
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 16
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Range Statistics    SOLVE quad Using NLP From line 57
+
+
+RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
+
+RHS       [min, max] : [ 8.000E+00, 8.000E+00]
+Bound     [min, max] : [        NA,        NA]
+Matrix    [min, max] : [ 1.000E+00, 4.000E+00]
+
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 17
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Model Statistics    SOLVE quad Using NLP From line 57
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           1     SINGLE EQUATIONS            1
+BLOCKS OF VARIABLES           3     SINGLE VARIABLES            3
+NON ZERO ELEMENTS             3     NON LINEAR N-Z              2
+CODE LENGTH                  18     CONSTANT POOL              18
+
+
+GENERATION TIME      =        0.000 SECONDS      4 MB  50.4.0 c55df396 WEX-WEI
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 18
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE quad Using NLP From line 57
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   quad                OBJECTIVE  z
+     TYPE    NLP                 DIRECTION  MINIMIZE
+     SOLVER  CONOPT              FROM LINE  57
+
+**** SOLVER STATUS     1 Normal Completion
+**** MODEL STATUS      2 Locally Optimal
+**** OBJECTIVE VALUE                0.0000
+
+ RESOURCE USAGE, LIMIT          0.015 10000000000.000
+ ITERATION COUNT, LIMIT         2    2147483647
+ EVALUATION ERRORS              0             0
+--- *** This solver runs with a demo license. No commercial use.
+ 
+ 
+    C O N O P T   version 4.37
+    Copyright (C) GAMS Software GmbH
+                  GAMS Development Corporation
+ 
+    Will use up to 4 threads.
+ 
+ 
+    The user model has 1 constraints and 3 variables
+    with 3 Jacobian elements, 2 of which are nonlinear.
+    The Hessian of the Lagrangian has 2 elements on the diagonal,
+    1 elements below the diagonal, and 2 nonlinear variables.
+ 
+    The post-triangular part of the model has 1 constraints and variables.
+ 
+    Preprocessed model has no constraints and 2 variables.
+ 
+ ** Optimal solution. Reduced gradient less than tolerance.
+ 
+ 
+ CONOPT time Total                            0.001 seconds
+   of which: Function evaluations             0.000 =  0.0%
+             1st Derivative evaluations       0.000 =  0.0%
+             2nd Derivative evaluations       0.000 =  0.0%
+             Directional 2nd Deriv(Hess)      0.000 =  0.0%
+             Interval derivative evals        0.000 =  0.0%
+ 
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU obj                8.0000         8.0000         8.0000         1.0000      
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR x1                -INF            1.0000        +INF            EPS         
+---- VAR x2                -INF            1.0000        +INF            EPS         
+---- VAR z                 -INF             .            +INF             .          
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+                             0     ERRORS
+GAMS 50.4.0  c55df396 Aug 12, 2025          WEX-WEI x86 64bit/MS Windows - 09/02/25 18:27:22 Page 19
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+E x e c u t i o n
+
+
+----     59 VARIABLE x1.L                  =        1.000  
+            VARIABLE x2.L                  =        1.000  
+            VARIABLE z.L                   =        0.000  
+
+----     71 PARAMETER results  
+
+x1        1.000,    x2        1.000,    ModelStat 2.000,    SolveStat 1.000,    CPUtime   0.131
+
+
+
+EXECUTION TIME       =        0.125 SECONDS      4 MB  50.4.0 c55df396 WEX-WEI
+
+
+USER: GAMS Demo, for EULA and demo limitations see   G250531/0001CB-GEN
+      https://www.gams.com/latest/docs/UG%5FLicense.html         DC0000
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\Owner\Desktop\C&PE 778\homework_02.gms
+Output     C:\Users\Owner\Desktop\C&PE 778\homework_02.lst

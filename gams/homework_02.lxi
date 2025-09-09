@@ -1,0 +1,55 @@
+B 3 C o m p i l a t i o n
+B 82 Equation Listing    SOLVE quad Using NLP From line 16
+D 85 obj
+B 91 Column Listing      SOLVE quad Using NLP From line 16
+E 94 x1
+E 101 x2
+E 108 z
+B 116 Range Statistics    SOLVE quad Using NLP From line 16
+B 127 Model Statistics    SOLVE quad Using NLP From line 16
+B 141 Solution Report     SOLVE quad Using NLP From line 16
+F 189 obj
+G 193 x1
+G 194 x2
+G 195 z
+B 204 E x e c u t i o n
+I 206 x1
+I 207 x2
+I 208 z
+I 209 results
+B 217 Equation Listing    SOLVE quad Using NLP From line 37
+D 220 obj
+B 226 Column Listing      SOLVE quad Using NLP From line 37
+E 229 x1
+E 236 x2
+E 243 z
+B 251 Range Statistics    SOLVE quad Using NLP From line 37
+B 262 Model Statistics    SOLVE quad Using NLP From line 37
+B 276 Solution Report     SOLVE quad Using NLP From line 37
+F 324 obj
+G 328 x1
+G 329 x2
+G 330 z
+B 339 E x e c u t i o n
+I 341 x1
+I 342 x2
+I 343 z
+I 344 results
+B 352 Equation Listing    SOLVE quad Using NLP From line 57
+D 355 obj
+B 361 Column Listing      SOLVE quad Using NLP From line 57
+E 364 x1
+E 371 x2
+E 378 z
+B 386 Range Statistics    SOLVE quad Using NLP From line 57
+B 397 Model Statistics    SOLVE quad Using NLP From line 57
+B 411 Solution Report     SOLVE quad Using NLP From line 57
+F 459 obj
+G 463 x1
+G 464 x2
+G 465 z
+B 474 E x e c u t i o n
+I 476 x1
+I 477 x2
+I 478 z
+I 479 results

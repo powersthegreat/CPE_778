@@ -1,0 +1,65 @@
+
+--- Job homework_01_3.gms Start 08/25/25 19:19:17 50.4.0 c55df396 WEX-WEI x86 64bit/MS Windows
+--- Applying:
+    C:\GAMS\50\gmsprmNT.txt
+--- GAMS Parameters defined
+    Input "C:\Users\Owner\Desktop\C&PE 778\homework_01_3.gms"
+    PageSize 0
+    ScrDir "C:\Users\Owner\Desktop\C&PE 778\225a\"
+    SysDir C:\GAMS\50\
+    LogOption 3
+    AppendLog 1
+    ErrMsg 1
+    ErrorLog 99
+    IDE 1
+    LstTitleLeftAligned 1
+Licensee: GAMS Demo, for EULA and demo limitations see   G250531/0001CB-GEN
+          https://www.gams.com/latest/docs/UG%5FLicense.html         DC0000
+          C:\GAMS\50\gamslice.txt
+          Demo license for demonstration and instructional purposes only
+System information: 8 physical cores and 16 Gb physical memory detected
+GAMS 50.4.0   Copyright (C) 1987-2025 GAMS Development. All rights reserved
+--- Starting compilation
+--- homework_01_3.gms(56) 3 Mb
+--- Starting execution: elapsed 0:00:00.005
+--- Generating LP model test
+--- homework_01_3.gms(23) 4 Mb
+---   4 rows  4 columns  13 non-zeroes
+--- Range statistics (absolute non-zero finite values)
+--- RHS       [min, max] : [ 2.000E+00, 8.000E+00] - Zero values observed as well
+--- Bound     [min, max] : [        NA,        NA] - Zero values observed as well
+--- Matrix    [min, max] : [ 1.000E+00, 9.000E+00]
+--- Executing CPLEX (Solvelink=2): elapsed 0:00:00.020
+
+IBM ILOG CPLEX   50.4.0 c55df396 Aug 12, 2025          WEI x86 64bit/MS Window
+
+*** This solver runs with a demo license. No commercial use.
+--- GMO setup time: 0.00s
+--- GMO memory 0.50 Mb (peak 0.50 Mb)
+--- Dictionary memory 0.00 Mb
+--- Cplex 22.1.2.0 link memory 0.00 Mb (peak 0.00 Mb)
+--- Starting Cplex
+
+Version identifier: 22.1.2.0 | 2024-11-25 | 0edbb82fd
+CPXPARAM_Advance                                 0
+CPXPARAM_Simplex_Display                         2
+CPXPARAM_MIP_Display                             4
+CPXPARAM_MIP_Pool_Capacity                       0
+CPXPARAM_MIP_Tolerances_AbsMIPGap                0
+Tried aggregator 1 time.
+LP Presolve eliminated 3 rows and 4 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+
+--- LP status (1): optimal.
+--- Cplex Time: 0.00sec (det. 0.00 ticks)
+
+
+Optimal solution found
+Objective:            0.000000
+
+--- Reading solution for model test
+--- Executing after solve: elapsed 0:00:00.058
+--- homework_01_3.gms(25) 4 Mb
+*** Status: Normal completion
+--- Job homework_01_3.gms Stop 08/25/25 19:19:17 elapsed 0:00:00.058
