@@ -1,0 +1,15 @@
+{
+    // --- Markdown PDF MathJax Settings ---
+    "markdown-pdf.mathjax": true,
+    "markdown-pdf.mathjaxConfig": {
+        "tex": {
+            "inlineMath": [["$", "$"], ["\\(", "\\)"]],
+            "displayMath": [["$$", "$$"], ["\\[", "\\]"]],
+            "processEscapes": true
+        },
+        "svg": {
+            "fontCache": "global"
+        }
+    }
+
+}
