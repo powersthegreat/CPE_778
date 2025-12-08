@@ -39,11 +39,21 @@ optParams.wf = wf;
 % J = @(x) Jx(x, optParams);
 % C = @(x) Cx(x, optParams);
 
-% debugging gradient with finite difference
+% debugging objective and objective gradient
 J = @(x) Jx(x, optParams);
 VJ = @(x) VJx(x, optParams);
-
 checkGradient(J, VJ, s_init);
+
+% debugging inequality constraint and inequality constraint gradient
+G = @(x) Gx(x, optParams);
+VG = @(x) VGx(x, optParams);
+checkGradient(G, VG, s_init);
+
+% debugging equality constraint and equality constraint gradient
+H = @(x) Hx(x, optParams);
+VH = @(x) VHx(x, optParams);
+checkGradient(H, VH, s_init);
+
 s = 0;
 
 
