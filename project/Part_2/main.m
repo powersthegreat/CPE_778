@@ -24,11 +24,15 @@ simParams.spectral_template = windowKaiser(simParams.nfft, 0.585*(1/simParams.b)
 
 %% Generate Waveform
 
-% % generate LFM waveform
-% waveform = generateLFM(simParams);
+% generate LFM waveform
+waveform = generateLFM(simParams);
 
 % % generate NLFM waveform
 % waveform = generateNLFM(simParams);
+
+plotWaveformComponents(waveform / max(waveform), simParams.sample_rate);
+plotPowerSpectrum(waveform, simParams.sample_rate);
+plotCorrelationResponse(waveform, waveform, simParams.sample_rate);
 
 % generate CELSI waveform
 waveform = generateCELSI(simParams);
@@ -37,6 +41,6 @@ waveform = generateCELSI(simParams);
 
 %% Plot Outputs
 
-% plotWaveformComponents(waveform / max(waveform), simParams.sample_rate);
-% plotPowerSpectrum(waveform, simParams.sample_rate);
-% plotCorrelationResponse(waveform, waveform, simParams.sample_rate);
+plotWaveformComponents(waveform / max(waveform), simParams.sample_rate);
+plotPowerSpectrum(waveform, simParams.sample_rate);
+plotCorrelationResponse(waveform, waveform, simParams.sample_rate);

@@ -20,7 +20,7 @@ function checkGradient(f, df, x0)
     end
 
     % === Print summary statistics ===
-    fprintf('\n--- GRADIENT CHECK SUMMARY ---\n');
+    fprintf('\n--- NUMERICAL GRADIENT SUMMARY ---\n');
     fprintf(' Max error : %.3e\n', max(error));
     fprintf(' Mean error: %.3e\n', mean(error));
     fprintf(' Min error : %.3e\n', min(error));

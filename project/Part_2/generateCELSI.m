@@ -5,7 +5,7 @@ nPulse = length(simParams.t);
 
 % Form binary spectral mask
 G = abs(simParams.spectral_template);
-wf = fftshift(G <= 0.25);
+wf = fftshift(G <= 0.4);
 
 % figure("Name", "Debuggign PSD Template");
 % plot(db(G + 0.001)); hold on;
@@ -19,7 +19,6 @@ if nargin < 2 || isempty(s_init)
     % No initial waveform provided -> default to LFM
     s_init = generateLFM(simParams);
 end
-% s_init = s_init.*exp((0.45)*2i*pi*(rand(size(s_init))-.5)); % add some randomness
 s_init = [real(s_init); imag(s_init)];
 
 % Define autocorrelation mask
@@ -27,7 +26,7 @@ wsl = computeCorrelationMask(s_init, simParams.nfft);
 
 % Define optimization parameters
 optParams = struct();
-optParams.iter = 100;
+optParams.iter = 50;
 optParams.p = 8;
 optParams.gamma = gamma;
 optParams.nPulse = nPulse;
@@ -35,45 +34,42 @@ optParams.nfft = simParams.nfft;
 optParams.wsl = wsl;
 optParams.wf = wf;
 
-% % Objective and constraint function definitions
-% J = @(x) Jx(x, optParams);
-% C = @(x) Cx(x, optParams);
-
-% debugging objective and objective gradient
+% Objective and constraint function definitions
 J = @(x) Jx(x, optParams);
-VJ = @(x) VJx(x, optParams);
-checkGradient(J, VJ, s_init);
+C = @(x) Cx(x, optParams);
 
-% debugging inequality constraint and inequality constraint gradient
-G = @(x) Gx(x, optParams);
-VG = @(x) VGx(x, optParams);
-checkGradient(G, VG, s_init);
+% % debugging objective and objective gradient
+% J = @(x) Jx(x, optParams);
+% VJ = @(x) VJx(x, optParams);
+% checkGradient(J, VJ, s_init);
 
-% debugging equality constraint and equality constraint gradient
-H = @(x) Hx(x, optParams);
-VH = @(x) VHx(x, optParams);
-checkGradient(H, VH, s_init);
+% % debugging inequality constraint and inequality constraint gradient
+% G = @(x) Gx(x, optParams);
+% VG = @(x) VGx(x, optParams);
+% checkGradient(G, VG, s_init);
 
-s = 0;
+% % debugging equality constraint and equality constraint gradient
+% H = @(x) Hx(x, optParams);
+% VH = @(x) VHx(x, optParams);
+% checkGradient(H, VH, s_init);
 
+% Run optimization usign fmincon toolbox
+options = optimoptions('fmincon','MaxFunctionEvaluations',1e10,'MaxIterations',optParams.iter, ...
+    'OptimalityTolerance',1e-12, 'StepTolerance',1e-12,'Algorithm','interior-point',...
+    'SpecifyObjectiveGradient', false, 'SpecifyConstraintGradient', false, 'Display', 'iter');
+x_opt = fmincon(J, s_init, [],[],[],[],[],[], C, options);
 
-% % Run optimization usign fmincon toolbox
-% options = optimoptions('fmincon','MaxFunctionEvaluations',1e10,'MaxIterations',optParams.iter, ...
-%     'OptimalityTolerance',1e-10, 'StepTolerance',1e-10,'Algorithm','interior-point',...
-%     'SpecifyObjectiveGradient', true, 'SpecifyConstraintGradient', true, 'Display', 'iter');
-% x_opt = fmincon(J, s_init, [],[],[],[],[],[], C, options);
+% Reconstruct waveform from real and imaginary
+s = x_opt(1:nPulse) + 1i*x_opt(nPulse+1:end);
 
-% % Reconstruct waveform from real and imaginary
-% s = x_opt(1:nPulse) + 1i*x_opt(nPulse+1:end);
-
-% % Normalize pulse to unit energy
-% s = s./sqrt(sum(abs(s).^2));
+% Normalize pulse to unit energy
+s = s./sqrt(sum(abs(s).^2));
 
 
 
 %% Objective and Constraint Functions
 
-function [J] = Jx(x, optParams)
+function [J, VJ] = Jx(x, optParams)
     
     nPulse = optParams.nPulse;
     nfft = optParams.nfft;
@@ -87,8 +83,8 @@ function [J] = Jx(x, optParams)
     ccorr = ifft( fft(s, nfft) .* conj(fft(s, nfft)));
     J = log(sum(abs(wsl.*ccorr).^p));
 
-    % % Call objective gradient function
-    % VJ = VJx(x, optParams);
+    % Call objective gradient function
+    VJ = VJx(x, optParams);
 
     % % Debugging ACF
     % figure("Name", "Debugging ACF Mask");
@@ -117,10 +113,12 @@ function [VJ] = VJx(x, optParams)
     tempsl = fft(wsl.*temp);
 
     % CELSI gradient
-    c = ifft(fft(s, nfft) .* tempsl);
-    g = p*imag(conj(s).*c(1:size(s,1),:));
-    VJ = 2*g/Jsl;
-    VJ = [real(VJ); imag(VJ)];
+    S = fft(s, nfft);
+    c = ifft(S .* tempsl);
+    g_s = p * c(1:nPulse);
+    g_re = 2 * real(g_s) / Jsl;
+    g_im = 2 * imag(g_s) / Jsl;
+    VJ = [g_re; g_im];
 
 return
 
@@ -135,49 +133,51 @@ function [G] = Gx(x, optParams)
     s = x(1:nPulse) + 1i.*x(nPulse+1:end);
 
     % Inequality constraint function
-    G = sum(wf.*((abs(fft(s,nfft)/sqrt(nfft)).^2))) - gamma*sum(abs(s).^2);
+    X = fft(s, nfft) / sqrt(nfft);
+    G = sum(wf .* abs(X).^2) - gamma * sum(abs(s).^2);
     
 return
 
 function [VG] = VGx(x, optParams)
 
-    wf = optParams.wf;
-    gamma = optParams.gamma;
-    nfft = optParams.nfft;
+    wf     = optParams.wf;
+    gamma  = optParams.gamma;
+    nfft   = optParams.nfft;
     nPulse = optParams.nPulse;
 
-    % Reconstruct waveform from real and imaginary
-    s = x(1:nPulse) + 1i.*x(nPulse+1:end);
-    
-    % Inequaility constraint gradient
-    temp = ifft(fft(s, nfft).*wf);
-    VG = 2*imag(conj(s).*(temp(1:nPulse)-gamma*s));
-    VG = [real(VG); imag(VG)];
-   
+    % Reconstruct waveform
+    s = x(1:nPulse) + 1i*x(nPulse+1:end);
+
+    % FFT with 1/sqrt(nfft)
+    X = fft(s, nfft) / sqrt(nfft);
+
+    % === CORRECT GRADIENT: include 1/sqrt(nfft) ===
+    g_s_full = ifft(wf .* X) / sqrt(nfft);
+
+    % Truncate to N time-domain samples and subtract energy term
+    g_s = g_s_full(1:nPulse) - gamma * s;
+
+    % Convert to real + imag variables
+    VG_real = 2 * real(g_s);
+    VG_imag = 2 * imag(g_s);
+    VG = [VG_real; VG_imag];
 return
 
-function [H] = Hx(x, optParams)
-
-    nPulse = optParams.nPulse;
-
-    % Reconstruct waveform from real and imaginary
-    s = x(1:nPulse) + 1i.*x(nPulse+1:end);
-
-    % Equality constraint function
-    H = sum(abs(s) - 1.0).^2;
-
+function H = Hx(x,optParams)
+    n = optParams.nPulse;
+    s = x(1:n) + 1i*x(n+1:end);
+    H = abs(s).^2 - 1;
 return
 
-function [VH] = VHx(x, optParams)
+function VH = VHx(x,optParams)
 
-    nPulse = optParams.nPulse;
+    n = optParams.nPulse;
+    s = x(1:n) + 1i*x(n+1:end);
 
-    % Reconstruct waveform from real and imaginary
-    s = x(1:nPulse) + 1i.*x(nPulse+1:end);
-
-    % Equality constraint objective
-    VH = 2*s;
-    VH = [real(VH); imag(VH)];
+    VH = zeros(n,2*n);
+    VH(:,1:n)     = diag(2*real(s));
+    VH(:,n+1:end) = diag(2*imag(s));
+    VH = VH.';
 
 return
 
