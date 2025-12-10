@@ -163,20 +163,9 @@ return
 
 function [x, hist] = ALM(x0, optParams)
     
-    % ALM  Augmented Lagrangian Method for:
-    %   min_x J(x)
-    %   s.t.  h(x) = 0      (constant envelope)
-    %         g(x) <= 0     (spectral mask)
-    %
-    % Uses:
-    %   Jx(x,optParams)   : scalar objective
-    %   VJx(x,optParams)  : gradient of objective (2N x 1)
-    %   Hx(x,optParams)   : equality constraint vector h (N x 1)
-    %   JHx(x,optParams)  : Jacobian of h wrt x (N x 2N)
-    %   Gx(x,optParams)   : scalar inequality constraint g
-    %   VGx(x,optParams)  : gradient of g (2N x 1)
+    % ALM  Augmented Lagrangian Method
 
-    % === Unpack optimization settings ===
+    % Unpack optimization settings
     alpha      = optParams.alpha;       % primal gradient step
     rho        = optParams.rho_init;    % equality penalty
     eta        = optParams.eta_init;    % inequality penalty
@@ -185,19 +174,19 @@ function [x, hist] = ALM(x0, optParams)
     tol        = optParams.tol;         % outer stopping tolerance
     nPulse     = optParams.nPulse;      
 
-    % Inner-loop tolerance (relative)
+    % Inner-loop tolerance
     if isfield(optParams, 'innerTol')
         innerTol = optParams.innerTol;
     else
-        innerTol = 1e-3;  % relative gradient tolerance
+        innerTol = 1e-3;
     end
 
-    % === Initialize primal and dual variables ===
+    % Initialize primal and dual variables
     x      = x0(:);
-    lambda = zeros(nPulse,1);   % equality multipliers
-    mu     = 0;                 % inequality multiplier (scalar)
+    lambda = zeros(nPulse,1);
+    mu     = 0;
 
-    % === History storage ===
+    % History storage
     hist.obj     = zeros(maxOuter,1);
     hist.hnorm   = zeros(maxOuter,1);
     hist.gval    = zeros(maxOuter,1);
@@ -205,30 +194,26 @@ function [x, hist] = ALM(x0, optParams)
     hist.rho     = zeros(maxOuter,1);
     hist.eta     = zeros(maxOuter,1);
 
-    % ==========================================================
-    %                    OUTER ALM LOOP
-    % ==========================================================
+    % 0. OUTER ALM LOOP
     for k = 1:maxOuter
 
-        % ------------------------------------------------------
         % 1. INNER LOOP
-        % ------------------------------------------------------
         for it = 1:maxInner
 
             % Objective gradient
-            gJ = VJx(x, optParams);   % (2N x 1)
+            gJ = VJx(x, optParams);
 
             % Equality constraint + Jacobian
-            h  = Hx(x, optParams);    % (N x 1)
-            Jh = JHx(x, optParams);   % (N x 2N)
-            v  = lambda + rho*h;      % (N x 1)
-            grad_eq = Jh' * v;        % (2N x 1)
+            h  = Hx(x, optParams);
+            Jh = JHx(x, optParams);
+            v  = lambda + rho*h;
+            grad_eq = Jh' * v;
 
             % Inequality constraint + gradient
-            g  = Gx(x, optParams);    % scalar
-            gG = VGx(x, optParams);   % (2N x 1)
-            t  = max(0, g);           % hinge term
-            grad_ineq = (mu + eta*t) * gG;   % (2N x 1)
+            g  = Gx(x, optParams); 
+            gG = VGx(x, optParams);
+            t  = max(0, g);
+            grad_ineq = (mu + eta*t) * gG;
 
             % Full AL gradient
             grad_AL = gJ + grad_eq + grad_ineq;
@@ -252,22 +237,16 @@ function [x, hist] = ALM(x0, optParams)
             end
         end
 
-        % ------------------------------------------------------
         % 2. RE-EVALUATE AT CURRENT x FOR DUAL UPDATES & LOGGING
-        % ------------------------------------------------------
         Jval = Jx(x, optParams);
         h    = Hx(x, optParams);
         g    = Gx(x, optParams);
 
-        % ------------------------------------------------------
-        % 3. DUAL UPDATES (standard ALM)
-        % ------------------------------------------------------
-        lambda = lambda + rho * h;     % equality multipliers
-        mu     = max(0, mu + eta * g); % inequality multiplier (projected)
+        % 3. DUAL UPDATES
+        lambda = lambda + rho * h;
+        mu     = max(0, mu + eta * g);
 
-        % ------------------------------------------------------
         % 4. LOG HISTORY
-        % ------------------------------------------------------
         hist.obj(k)      = Jval;
         hist.hnorm(k)    = norm(h);
         hist.gval(k)     = g;
@@ -275,12 +254,9 @@ function [x, hist] = ALM(x0, optParams)
         hist.rho(k)      = rho;
         hist.eta(k)      = eta;
 
-        fprintf('Outer %3d: Obj = %.4f, ||h|| = %.3e, g = %.3e, |grad| = %.3e\n', ...
-                k, Jval, norm(h), g, grad_norm);
+        fprintf('Outer %3d: Obj = %.4f, ||h|| = %.3e, g = %.3e, |grad| = %.3e\n', k, Jval, norm(h), g, grad_norm);
 
-        % ------------------------------------------------------
         % 5. OUTER STOPPING CRITERIA
-        % ------------------------------------------------------
         if (norm(h) < tol) && (g <= tol)
             fprintf('ALM converged successfully.\n');
             hist.obj      = hist.obj(1:k);

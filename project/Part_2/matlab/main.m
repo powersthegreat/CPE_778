@@ -1,12 +1,11 @@
 clc; clear;
-addpath('plotting');
 addpath('helpers');
 
 
 
-%% Define Design and Simulation Parameters
+%% Design and Simulation Parameters
 
-% define design parameters
+% set design parameters
 simParams = struct();
 simParams.bandwidth       = 100e6;
 simParams.sample_rate     = .5e9;
@@ -24,16 +23,10 @@ simParams.spectral_template = windowKaiser(simParams.nfft, 0.585*(1/simParams.b)
 
 %% Generate Waveform
 
-% % generate LFM waveform
-% waveform = generateLFM(simParams);
+% generate LFM waveform
+initialization_waveform = generateLFM(simParams);
+plotWaveform(initialization_waveform, simParams.sample_rate);
 
 % generate optimized waveform
-waveform = generateOptimizedLFM(simParams);
-
-
-
-%% Plot Outputs
-
-plotWaveformComponents(waveform / max(waveform), simParams.sample_rate);
-plotPowerSpectrum(waveform, simParams.sample_rate);
-plotCorrelationResponse(waveform, waveform, simParams.sample_rate);
+waveform = generateOptimizedLFM(simParams, initialization_waveform);
+plotWaveform(waveform, simParams.sample_rate);
